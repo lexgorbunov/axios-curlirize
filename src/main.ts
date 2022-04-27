@@ -66,12 +66,12 @@ export const logAxiosReject = (params: {
       }
       if ('response' in error) {
         const config = error.response;
-        const code = config.status;
-        const statusText = config.statusText;
-        const data = config.data;
+        const code = config?.status;
+        const statusText = config?.statusText;
+        const data = config?.data;
         if (config === 401 && params.on401) {
           logger(`[ERROR.RESPONSE.FIRST.CHECK.401]`)
-          params.on401(config.url)
+          params.on401(config?.url)
           throw error;
         }
         logger(
@@ -87,7 +87,7 @@ export const logAxiosReject = (params: {
 
     if ('response' in error && error?.response?.status === 401 && params.on401) {
       logger(`[ERROR.RESPONSE.LAST.CHECK.401]`)
-      params.on401(error.config.url)
+      params.on401(error.config?.url ?? error.request?._url ?? '')
     }
 
     throw error;
